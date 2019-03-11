@@ -1,21 +1,28 @@
 package com.example.er.Search.Searcher
 
+import android.content.Context
 import com.example.er.Search.Input.BaseInput.IBaseInput
 import com.example.er.Search.Ouptut.BaseOutput.IBaseOutput
+import com.kesso.facesearchenative.NativeSearcher
+import org.opencv.core.Mat
 
-class Searcher(): ISearcher {
+class Searcher(
+        private val nativeSearcher: NativeSearcher
+): ISearcher {
     private var mInput: IBaseInput? = null
     private var mOutput: IBaseOutput? = null
-    var searcherType: SearcherType = SearcherType.Native
-        set(value){
-            field = value
-            TODO() // add change detector
-        }
+    private var mRgba: Mat? = null
+    private var mGray: Mat? = null
 
     var minFaceSize: Float = 0.0f
         set(value) {
             field = value
-            TODO()
+
+            val height = mGray?.rows()
+            if (Math.round(height!! * value) > 0) {
+                val mAbsoluteFaceSize = Math.round(height * value)
+                nativeSearcher.setMinFaceSize(mAbsoluteFaceSize)
+            }
         }
 
     override fun setInput(input: IBaseInput) {
@@ -27,32 +34,40 @@ class Searcher(): ISearcher {
     }
 
     override fun start() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mInput?.open()
+        nativeSearcher.start()
     }
 
     override fun stop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mInput?.close()
+        nativeSearcher.stop()
     }
 
     override fun pause() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mInput?.close()
+        nativeSearcher.pause()
     }
 
-    override fun receive() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun resume() {
+        mInput?.open()
+        nativeSearcher.resume()
     }
 
-    data class Builder(
-            var searcherType: SearcherType,
-            var minFaceSize: Float
-    ){
-        fun searcherType(searcherType: SearcherType) = apply { this.searcherType = searcherType }
+    data class Builder(val context: Context,
+                       var minFaceSize: Float = 0.2f,
+                       var input: IBaseInput,
+                       var output: IBaseOutput){
         fun minFaceSize(minFaceSize: Float) = apply { this.minFaceSize = minFaceSize }
+        fun input(input: IBaseInput) = apply { this.input = input }
+        fun output(output: IBaseOutput) = apply { this.output = output}
+
 
         fun build(): Searcher {
-            val searcher = Searcher()
-            searcher.searcherType = searcherType
+            val searcher = Searcher(NativeSearcher(context, 0))
             searcher.minFaceSize = minFaceSize
+            searcher.setInput(input)
+            searcher.setOutput(output)
+
             return searcher
         }
     }

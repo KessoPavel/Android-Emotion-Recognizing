@@ -1,11 +1,32 @@
 package com.kesso.facesearchenative;
 
+import android.content.Context;
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class NativeSearcher {
-    public NativeSearcher(String cascadeName, int minFaceSize) {
-        mNativeObj = nativeCreateObject(cascadeName, minFaceSize);
+    public NativeSearcher(Context context, int minFaceSize) throws IOException {
+        InputStream is =  context.getResources().openRawResource(R.raw.lbpcascade_frontalface);
+        File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
+        File cascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");
+        FileOutputStream os = new FileOutputStream(cascadeFile);
+
+        byte[] buffer = new byte[4096];
+        int bytesRead;
+        while ((bytesRead = is.read(buffer)) != -1) {
+            os.write(buffer, 0, bytesRead);
+        }
+        is.close();
+        os.close();
+
+        mNativeObj = nativeCreateObject(cascadeFile.getAbsolutePath(), minFaceSize);
     }
 
     public void start() {
@@ -15,6 +36,10 @@ public class NativeSearcher {
     public void stop() {
         nativeStop(mNativeObj);
     }
+
+    public void pause() { nativeStop(mNativeObj); }
+
+    public void resume() { nativeStart(mNativeObj); }
 
     public void setMinFaceSize(int size) {
         nativeSetFaceSize(mNativeObj, size);

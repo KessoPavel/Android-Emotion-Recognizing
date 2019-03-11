@@ -10,5 +10,5 @@ interface ISearcher {
     fun start()
     fun stop()
     fun pause()
-    fun receive()
+    fun resume()
 }
