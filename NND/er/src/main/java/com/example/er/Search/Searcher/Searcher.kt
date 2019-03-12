@@ -2,16 +2,18 @@ package com.example.er.Search.Searcher
 
 import android.content.Context
 import com.example.er.Search.Input.BaseInput.IBaseInput
+import com.example.er.Search.Input.BaseInput.IFrame
+import com.example.er.Search.Input.BaseInput.IInputListener
 import com.example.er.Search.Ouptut.BaseOutput.IBaseOutput
 import com.kesso.facesearchenative.NativeSearcher
 import org.opencv.core.Mat
+import org.opencv.core.MatOfRect
 
 class Searcher(
         private val nativeSearcher: NativeSearcher
-): ISearcher {
+): ISearcher, IInputListener {
     private var mInput: IBaseInput? = null
     private var mOutput: IBaseOutput? = null
-    private var mRgba: Mat? = null
     private var mGray: Mat? = null
 
     var minFaceSize: Float = 0.0f
@@ -27,6 +29,7 @@ class Searcher(
 
     override fun setInput(input: IBaseInput) {
         mInput = input
+        input.setInputListener(this)
     }
 
     override fun setOutput(output: IBaseOutput) {
@@ -51,6 +54,15 @@ class Searcher(
     override fun resume() {
         mInput?.open()
         nativeSearcher.resume()
+    }
+
+    override fun receiveFrame(frame: IFrame) {
+        val faces = MatOfRect()
+        nativeSearcher.detect(frame.data, faces)
+
+        for (face in faces.toArray()){
+
+        }
     }
 
     data class Builder(val context: Context,

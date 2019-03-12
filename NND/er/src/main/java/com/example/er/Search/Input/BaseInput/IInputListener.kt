@@ -1,5 +1,5 @@
 package com.example.er.Search.Input.BaseInput
 
 interface IInputListener {
-    fun receiveFrame(frame: IFrame): Void
+    fun receiveFrame(frame: IFrame)
 }
