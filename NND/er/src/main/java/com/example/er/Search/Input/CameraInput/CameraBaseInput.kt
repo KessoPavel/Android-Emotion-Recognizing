@@ -8,7 +8,7 @@ import org.opencv.android.CameraBridgeViewBase
 
 class CameraBaseInput constructor(private var mCameraBridgeViewBase: CameraBridgeViewBase) : ICameraBaseInput {
     private var mFrameListener: IDataInputListener? = null
-    private val mCameraViewListener: CameraViewListener = CameraViewListener(mFrameListener)
+    private var mCameraViewListener: CameraViewListener = CameraViewListener(mFrameListener)
 
     override var availableCameras: Array<ErCamera> = arrayOf()
         get() {
@@ -44,5 +44,6 @@ class CameraBaseInput constructor(private var mCameraBridgeViewBase: CameraBridg
 
     override fun setDataInputListener(listenerData: IDataInputListener) {
         mFrameListener = listenerData
+        mCameraViewListener = CameraViewListener(mFrameListener)
     }
 }

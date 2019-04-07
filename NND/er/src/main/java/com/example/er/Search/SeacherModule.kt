@@ -10,20 +10,18 @@ import com.example.er.Search.Searcher.ISearcher
 import com.example.er.Search.Searcher.Searcher
 import org.opencv.android.CameraBridgeViewBase
 
-class SearcherModule(val context: Context, val cameraView: CameraBridgeViewBase) {
+class SearcherModule(val context: Context, val cameraView: CameraBridgeViewBase, val output: IBaseOutput) {
     var input: IBaseInput? = null
-    var output: IBaseOutput? = null
     var searcher: ISearcher? = null
 
     fun init(){
         input = CameraBaseInput(cameraView)
         searcher = Searcher.Builder(
                 context = context,
-                output = object : IBaseOutput {
-                    override fun receive(frame: IFrame, searchFaces: List<Face>) {
-                    }
-                }
+                output = output
         ).build()
+
+        input?.setDataInputListener(searcher as Searcher)
     }
 
     fun open(){

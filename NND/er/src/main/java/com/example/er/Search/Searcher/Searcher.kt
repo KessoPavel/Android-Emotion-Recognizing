@@ -12,7 +12,7 @@ import org.opencv.core.MatOfRect
 
 class Searcher(
         private val nativeSearcher: NativeSearcher):
-        ISearcher, IDataInputListener {
+        ISearcher {
     private var mOutput: IBaseOutput? = null
     private var mGray: Mat? = null
 
