@@ -1,69 +1,48 @@
 package com.example.er.Search.Input.CameraInput
 
 import android.hardware.Camera
-import com.example.er.Search.Input.BaseInput.IFrame
-import com.example.er.Search.Input.BaseInput.IInputListener
+import com.example.er.Search.Input.BaseInput.IDataInputListener
+import com.example.er.Search.Input.CameraInput.ErCamera.CameraViewListener
+import com.example.er.Search.Input.CameraInput.ErCamera.ErCamera
 import org.opencv.android.CameraBridgeViewBase
-import org.opencv.core.Mat
 
-class CameraBaseInput  constructor(private var mCameraBridgeViewBase: CameraBridgeViewBase) : ICameraBaseInput {
-    private var mframeListener: IInputListener? = null
-    private val mCameraViewListener: CameraViewListener = CameraViewListener(mframeListener)
+class CameraBaseInput constructor(private var mCameraBridgeViewBase: CameraBridgeViewBase) : ICameraBaseInput {
+    private var mFrameListener: IDataInputListener? = null
+    private val mCameraViewListener: CameraViewListener = CameraViewListener(mFrameListener)
 
+    override var availableCameras: Array<ErCamera> = arrayOf()
+        get() {
+            val count = Camera.getNumberOfCameras();
 
-    override fun getAvailableCameras(): Array<ErCamera> {
-        val count = Camera.getNumberOfCameras();
-
-        return when (count){
-            0 -> arrayOf()
-            1 -> arrayOf(ErCamera.BASE)
-            else -> arrayOf(ErCamera.BASE, ErCamera.FRONT)
+            return when (count){
+                0 -> arrayOf()
+                1 -> arrayOf(ErCamera.BASE)
+                2 -> arrayOf(ErCamera.BASE, ErCamera.FRONT)
+                else -> field
+            }
         }
-    }
 
-    override fun switchCamera(camera: ErCamera) {
-        mCameraBridgeViewBase.setCameraIndex(camera.getCameraId())
-    }
+    override var currentCamera: ErCamera = ErCamera.BASE
+        set(value) = mCameraBridgeViewBase.setCameraIndex(value.getCameraId())
 
-    override fun open(): Boolean {
-        mCameraBridgeViewBase.visibility = CameraBridgeViewBase.VISIBLE;
+    override fun open(visible: Boolean): Boolean {
+        mCameraBridgeViewBase.visibility =
+                if (visible) CameraBridgeViewBase.VISIBLE else CameraBridgeViewBase.INVISIBLE;
         mCameraBridgeViewBase.setCvCameraViewListener(mCameraViewListener)
         mCameraBridgeViewBase.enableView()
         return true
     }
 
+    override fun open(): Boolean {
+        return open(true)
+    }
+
     override fun close() {
-        mframeListener = null
+        mFrameListener = null
         mCameraBridgeViewBase.disableView()
     }
 
-    override fun setInputListener(listener: IInputListener) {
-        mframeListener = listener
+    override fun setDataInputListener(listenerData: IDataInputListener) {
+        mFrameListener = listenerData
     }
-
-    private class CameraViewListener(var mFrameListener: IInputListener?): CameraBridgeViewBase.CvCameraViewListener2{
-        private var mGray: Mat? = null
-
-        override fun onCameraViewStarted(width: Int, height: Int) {
-            mGray = Mat()
-        }
-
-        override fun onCameraViewStopped() {
-            mGray?.release()
-        }
-
-        override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame?): Mat {
-            mGray = inputFrame?.gray()
-            if (mGray != null) {
-                mFrameListener?.receiveFrame(CameraFrame(mGray!!, mGray!!.rows(), mGray!!.cols()))
-            }
-
-            return inputFrame?.rgba()!!
-        }
-    }
-
-    class CameraFrame(
-            override val data: Mat,
-            override val offset: Int,
-            override val size: Int) : IFrame {}
 }

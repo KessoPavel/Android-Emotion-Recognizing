@@ -13,6 +13,8 @@ import java.io.InputStream;
 
 public class NativeSearcher {
     public NativeSearcher(Context context, int minFaceSize) throws IOException {
+        System.loadLibrary("detection_based_tracker");
+
         InputStream is =  context.getResources().openRawResource(R.raw.lbpcascade_frontalface);
         File cascadeDir = context.getDir("cascade", Context.MODE_PRIVATE);
         File cascadeFile = new File(cascadeDir, "lbpcascade_frontalface.xml");

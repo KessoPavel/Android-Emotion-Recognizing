@@ -5,7 +5,6 @@ import com.example.er.Search.Ouptut.BaseOutput.IBaseOutput
 import java.io.IOError
 
 interface ISearcher {
-    fun setInput(input: IBaseInput)
     fun setOutput(output: IBaseOutput)
     fun start()
     fun stop()

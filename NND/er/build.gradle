@@ -23,7 +23,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    packagingOptions {
+        pickFirst "lib/armeabi-v7a/libdetection_based_tracker.so"
+        pickFirst "lib/x86/libdetection_based_tracker.so"
+        pickFirst "lib/x86_64/libdetection_based_tracker.so"
+        pickFirst "lib/arm64-v8a/libdetection_based_tracker.so"
+    }
 }
 
 dependencies {
