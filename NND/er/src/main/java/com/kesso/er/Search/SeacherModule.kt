@@ -1,13 +1,11 @@
-package com.example.er.Search
+package com.kesso.er.Search
 
 import android.content.Context
-import com.example.er.Search.Input.BaseInput.IBaseInput
-import com.example.er.Search.Input.BaseInput.IFrame
-import com.example.er.Search.Input.CameraInput.CameraBaseInput
-import com.example.er.Search.Ouptut.BaseOutput.Face
-import com.example.er.Search.Ouptut.BaseOutput.IBaseOutput
-import com.example.er.Search.Searcher.ISearcher
-import com.example.er.Search.Searcher.Searcher
+import com.kesso.er.Search.Input.BaseInput.IBaseInput
+import com.kesso.er.Search.Input.CameraInput.CameraBaseInput
+import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput
+import com.kesso.er.Search.Searcher.ISearcher
+import com.kesso.er.Search.Searcher.Searcher
 import org.opencv.android.CameraBridgeViewBase
 
 class SearcherModule(val context: Context, val cameraView: CameraBridgeViewBase, val output: IBaseOutput) {

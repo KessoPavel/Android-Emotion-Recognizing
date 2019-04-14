@@ -1,9 +1,9 @@
-package com.example.er.Search.Input.CameraInput
+package com.kesso.er.Search.Input.CameraInput
 
 import android.hardware.Camera
-import com.example.er.Search.Input.BaseInput.IDataInputListener
-import com.example.er.Search.Input.CameraInput.ErCamera.CameraViewListener
-import com.example.er.Search.Input.CameraInput.ErCamera.ErCamera
+import com.kesso.er.Search.Input.BaseInput.IDataInputListener
+import com.kesso.er.Search.Input.CameraInput.ErCamera.CameraViewListener
+import com.kesso.er.Search.Input.CameraInput.ErCamera.ErCamera
 import org.opencv.android.CameraBridgeViewBase
 
 class CameraBaseInput constructor(private var mCameraBridgeViewBase: CameraBridgeViewBase) : ICameraBaseInput {

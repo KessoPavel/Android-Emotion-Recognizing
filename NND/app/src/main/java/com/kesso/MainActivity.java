@@ -1,16 +1,17 @@
 package com.kesso;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
 
-import com.example.er.Search.Input.BaseInput.IFrame;
-import com.example.er.Search.Input.CameraInput.ErCamera.ErCamera;
-import com.example.er.Search.Input.CameraInput.ICameraBaseInput;
-import com.example.er.Search.Ouptut.BaseOutput.Face;
-import com.example.er.Search.Ouptut.BaseOutput.IBaseOutput;
-import com.example.er.Search.Searcher.Searcher;
-import com.example.er.Search.SearcherModule;
+import com.kesso.er.Search.Input.BaseInput.IFrame;
+import com.kesso.er.Search.Input.CameraInput.ErCamera.ErCamera;
+import com.kesso.er.Search.Input.CameraInput.ICameraBaseInput;
+import com.kesso.er.Search.Ouptut.BaseOutput.Face;
+import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput;
+import com.kesso.er.Search.Searcher.Searcher;
+import com.kesso.er.Search.SearcherModule;
 
 import org.opencv.android.CameraBridgeViewBase;
 
@@ -18,7 +19,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IBaseOutput {
     private CameraBridgeViewBase cameraBridgeViewBase;
-    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         setContentView(R.layout.activity_main);
 
         cameraBridgeViewBase = findViewById(R.id.fd_activity_surface_view);
-        textView = findViewById(R.id.textView);
         SearcherModule searcherModule = new SearcherModule(this, cameraBridgeViewBase, this);
         searcherModule.init();
         searcherModule.open();
@@ -37,11 +36,12 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
     }
 
     @Override
-    public void receive(IFrame frame, List<Face> searchFaces) {
+    public void receive(IFrame frame, final List<Face> searchFaces) {
         runOnUiThread(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
             @Override
             public void run() {
-                textView.setText("1");
+
             }
         });
     }

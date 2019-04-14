@@ -1,11 +1,9 @@
-package com.example.er.Search.Searcher
+package com.kesso.er.Search.Searcher
 
 import android.content.Context
-import com.example.er.Search.Input.BaseInput.IBaseInput
-import com.example.er.Search.Input.BaseInput.IFrame
-import com.example.er.Search.Input.BaseInput.IDataInputListener
-import com.example.er.Search.Ouptut.BaseOutput.Face
-import com.example.er.Search.Ouptut.BaseOutput.IBaseOutput
+import com.kesso.er.Search.Input.BaseInput.IFrame
+import com.kesso.er.Search.Ouptut.BaseOutput.Face
+import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput
 import com.kesso.facesearchenative.NativeSearcher
 import org.opencv.core.Mat
 import org.opencv.core.MatOfRect

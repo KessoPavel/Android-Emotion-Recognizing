@@ -1,6 +1,6 @@
-package com.example.er.Search.Input.CameraInput.ErCamera
+package com.kesso.er.Search.Input.CameraInput.ErCamera
 
-import com.example.er.Search.Input.BaseInput.IDataInputListener
+import com.kesso.er.Search.Input.BaseInput.IDataInputListener
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Mat
 

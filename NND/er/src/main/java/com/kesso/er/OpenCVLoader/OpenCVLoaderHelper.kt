@@ -1,4 +1,4 @@
-package com.example.er.OpenCVLoader
+package com.kesso.er.OpenCVLoader
 
 import android.content.Context
 import org.opencv.android.BaseLoaderCallback

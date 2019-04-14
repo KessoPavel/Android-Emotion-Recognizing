@@ -1,6 +1,6 @@
-package com.example.er.Search.Input.CameraInput.ErCamera
+package com.kesso.er.Search.Input.CameraInput.ErCamera
 
-import com.example.er.Search.Input.BaseInput.IFrame
+import com.kesso.er.Search.Input.BaseInput.IFrame
 import org.opencv.core.Mat
 
 class CameraFrame(

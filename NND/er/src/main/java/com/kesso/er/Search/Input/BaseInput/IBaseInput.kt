@@ -1,4 +1,4 @@
-package com.example.er.Search.Input.BaseInput
+package com.kesso.er.Search.Input.BaseInput
 
 interface IBaseInput {
     fun open():             Boolean
