@@ -3,9 +3,21 @@ package com.kesso.er.Search.Input.CameraInput.ErCamera
 import com.kesso.er.Search.Input.BaseInput.IDataInputListener
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Mat
+import java.nio.file.Files.size
+import org.opencv.imgproc.Imgproc
+import org.opencv.core.Core
+import java.nio.file.Files.size
+
+
+
+
 
 class CameraViewListener(var mFrameListenerData: IDataInputListener?): CameraBridgeViewBase.CvCameraViewListener2{
     private var mGray: Mat? = null
+    private var mGrayT: Mat? = null
+    private var mRgba: Mat? = null
+    private var mRgbaT: Mat? = null
+
 
     override fun onCameraViewStarted(width: Int, height: Int) {
     }
@@ -16,11 +28,20 @@ class CameraViewListener(var mFrameListenerData: IDataInputListener?): CameraBri
 
     override fun onCameraFrame(inputFrame: CameraBridgeViewBase.CvCameraViewFrame?): Mat {
         if (inputFrame != null){
+            mRgba = inputFrame.rgba()
+            mRgbaT = mRgba?.t()
+            Core.flip(mRgba?.t(), mRgbaT, -1)
+            Imgproc.resize(mRgbaT, mRgbaT, mRgba?.size())
+
             mGray = inputFrame.gray()
-            if (mGray != null) {
-                mFrameListenerData?.receiveFrame(CameraFrame(mGray!!, mGray!!.rows(), mGray!!.cols()))
+            mGrayT = mGray?.t()
+            Core.flip(mGray?.t(), mGrayT, -1)
+            Imgproc.resize(mGrayT, mGrayT, mGray?.size())
+
+            if (mGrayT != null) {
+                mFrameListenerData?.receiveFrame(CameraFrame(mGrayT!!, mGrayT!!.rows(), mGrayT!!.cols()))
             }
-            return inputFrame.rgba()
+            return mRgbaT!!
         }
         return Mat()
     }

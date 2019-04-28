@@ -3,8 +3,12 @@ package com.kesso.er.FaceFrameDrawer.Render
 import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import com.kesso.er.FaceFrameDrawer.Frame.FaceFrame
+import java.util.*
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
+import java.util.Collections.synchronizedCollection
+import kotlin.collections.ArrayList
+
 
 class ErRender: GLSurfaceView.Renderer {
     private val modelViewMatrix = floatArrayOf(
@@ -13,13 +17,23 @@ class ErRender: GLSurfaceView.Renderer {
             0.0f, 0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 0.0f, 1.0f)
 
-    val faceFrames: List<FaceFrame> = ArrayList()
+    var faceFrames: Collection<FloatArray> = Collections.synchronizedCollection(ArrayList<FloatArray>())
+
+    init {
+        //faceFrames += FaceFrame(FaceFrame.Dot(-0.636824f, -0.5868056f), FaceFrame.Dot(-0.2804054f, 0.14583337f), 0.02f)
+    }
 
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
-        for (frame: FaceFrame in faceFrames){
+
+        for (array: FloatArray in faceFrames){
+            val frame = FaceFrame(FaceFrame.Dot(array[0], array[1]), FaceFrame.Dot(array[2], array[3]), array[4])
             frame.draw(modelViewMatrix)
+
         }
+
+        val frame = FaceFrame(FaceFrame.Dot(1.0f, 1.0f), FaceFrame.Dot(-1.0f, -1.0f), 0.02f)
+        frame.draw(modelViewMatrix)
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
