@@ -31,9 +31,6 @@ class ErRender: GLSurfaceView.Renderer {
             frame.draw(modelViewMatrix)
 
         }
-
-        val frame = FaceFrame(FaceFrame.Dot(1.0f, 1.0f), FaceFrame.Dot(-1.0f, -1.0f), 0.02f)
-        frame.draw(modelViewMatrix)
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {

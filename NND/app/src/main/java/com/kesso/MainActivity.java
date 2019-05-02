@@ -8,6 +8,7 @@ import android.support.constraint.ConstraintSet;
 import android.support.constraint.Constraints;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,16 +33,19 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
     private CameraBridgeViewBase cameraBridgeViewBase;
     private ErGLSurfaceView mGLSurfaceView;
     private ErRender mErRender;
+
+    private int height;
+    private int width;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+
         super.onCreate(savedInstanceState);
-
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
-
 
         mGLSurfaceView = new ErGLSurfaceView(this);
         mGLSurfaceView.setId(View.generateViewId());
@@ -77,13 +81,13 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
             int y2 = face.getY2();
 
             float gl_x1, gl_x2, gl_y1, gl_y2;
-            float screenHeight = cameraBridgeViewBase.getHeight();
-            float screenWidth = cameraBridgeViewBase.getWidth();
+            float cvHeight = frame.getData().height();
+            float cvWidth = frame.getData().width();
 
-            gl_x1 = (2 * (x1 / screenWidth)) - 1;
-            gl_x2 = (2 * (x2 / screenWidth)) - 1;
-            gl_y1 = (2 * (y1 / screenHeight)) - 1;
-            gl_y2 = (2 * (y2 / screenHeight)) - 1;
+            gl_x1 = ((2 * (x1 / cvWidth)) - 1) * (cvWidth / width);
+            gl_x2 = ((2 * (x2 / cvWidth)) - 1) * (cvWidth / width);
+            gl_y1 = ((2 * (y1 / cvHeight)) - 1) * (cvHeight / height);
+            gl_y2 = ((2 * (y2 / cvHeight)) - 1) * (cvHeight / height);
 
             faceFrames.add(new float[]{gl_x1, -gl_y1, gl_x2, -gl_y2, 0.01f});
         }
@@ -91,6 +95,6 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         mErRender.getFaceFrames().clear();
         mErRender.getFaceFrames().addAll(faceFrames);
         mGLSurfaceView.requestRender();
-
+        frame.getData().release();
     }
 }
