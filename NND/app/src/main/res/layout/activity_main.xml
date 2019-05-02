@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/glLiner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </android.support.constraint.ConstraintLayout>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -27,6 +28,7 @@
             android:id="@+id/fd_activity_surface_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

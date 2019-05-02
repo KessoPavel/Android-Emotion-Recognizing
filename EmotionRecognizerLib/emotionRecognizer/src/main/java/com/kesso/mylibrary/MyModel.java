@@ -69,7 +69,8 @@ public class MyModel extends Classifier {
 
   @Override
   protected void addPixelValue(int pixelValue) {
-    imgData.putInt(pixelValue);
+    float p = ((float) pixelValue) / 255;
+    imgData.putFloat(p);
   }
 
   @Override

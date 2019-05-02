@@ -9,9 +9,11 @@ import android.support.constraint.Constraints;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.kesso.er.FaceFrameDrawer.Frame.FaceFrame;
 import com.kesso.er.FaceFrameDrawer.Render.ErRender;
@@ -23,9 +25,15 @@ import com.kesso.er.Search.Ouptut.BaseOutput.Face;
 import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput;
 import com.kesso.er.Search.Searcher.Searcher;
 import com.kesso.er.Search.SearcherModule;
+import com.kesso.mylibrary.Classifier;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.core.Mat;
+import org.opencv.core.Rect;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
 
     private int height;
     private int width;
+
+    Classifier classifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +78,51 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         ICameraBaseInput iCameraBaseInput = (ICameraBaseInput) searcherModule.getInput();
         iCameraBaseInput.setCurrentCamera(ErCamera.FRONT);
         ((Searcher)searcherModule.getSearcher()).setMinFaceSize((float) 0.2);
+
+        try {
+             classifier = Classifier.create(this, Classifier.Device.CPU, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     boolean t = true;
     @Override
     public void receive(IFrame frame, final List<Face> searchFaces) {
         List<float[]> faceFrames = new ArrayList<>();
+        List<Mat> faces = new ArrayList<>();
+
+
         for (Face face : searchFaces){
             int x1 = face.getX1();
             int x2 = face.getX2();
             int y1 = face.getY1();
             int y2 = face.getY2();
+
+            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
+            Mat crop = new Mat(frame.getData(), roi);
+            Size sz = new Size(48,48);
+            Mat resize = new Mat();
+            Imgproc.resize(crop, resize, sz);
+
+            byte[] arr = new byte[48*48];
+            resize.get(0 ,0, arr);
+
+            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
+            String s = "";
+            for (Classifier.Recognition r : c){
+                s += r.toString();
+            }
+
+            String finalS = s;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            faces.add(resize);
 
             float gl_x1, gl_x2, gl_y1, gl_y2;
             float cvHeight = frame.getData().height();
