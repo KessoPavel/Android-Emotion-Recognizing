@@ -17,7 +17,6 @@ package com.kesso.mylibrary;
 
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.SystemClock;
 import android.os.Trace;
@@ -58,7 +57,7 @@ public abstract class Classifier {
   /** Dimensions of inputs. */
   private static final int DIM_BATCH_SIZE = 1;
 
-  private static final int DIM_PIXEL_SIZE = 3;
+  private static final int DIM_PIXEL_SIZE = 4;
 
   /** Preallocated buffers for storing image data in. */
   private final int[] intValues = new int[getImageSizeX() * getImageSizeY()];
@@ -91,7 +90,7 @@ public abstract class Classifier {
    */
   public static Classifier create(Activity activity, Device device, int numThreads)
       throws IOException {
-      return new ClassifierFloatMobileNet(activity, device, numThreads);
+      return new MyModel(activity, device, numThreads);
   }
 
   /** An immutable result returned by a Classifier describing what was recognized. */
@@ -183,11 +182,11 @@ public abstract class Classifier {
     labels = loadLabelList(activity);
     imgData =
         ByteBuffer.allocateDirect(
-            DIM_BATCH_SIZE
+                  DIM_BATCH_SIZE
                 * getImageSizeX()
                 * getImageSizeY()
-                * DIM_PIXEL_SIZE
-                * getNumBytesPerChannel());
+                * getNumBytesPerChannel()
+                * DIM_PIXEL_SIZE);
     imgData.order(ByteOrder.nativeOrder());
   }
 
@@ -215,31 +214,27 @@ public abstract class Classifier {
   }
 
   /** Writes Image data into a {@code ByteBuffer}. */
-  private void convertBitmapToByteBuffer(Bitmap bitmap) {
+  private void convertBitmapToByteBuffer(byte[] byteArray) {
     if (imgData == null) {
       return;
     }
     imgData.rewind();
-    bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
-    // Convert the image to floating point.
-    int pixel = 0;
-    long startTime = SystemClock.uptimeMillis();
-    for (int i = 0; i < getImageSizeX(); ++i) {
-      for (int j = 0; j < getImageSizeY(); ++j) {
-        final int val = intValues[pixel++];
-        addPixelValue(val);
+
+    for (int i =0; i < 3; i++) {
+      for (byte b : byteArray) {
+        addPixelValue(b);
       }
     }
     long endTime = SystemClock.uptimeMillis();
   }
 
   /** Runs inference and returns the classification results. */
-  public List<Recognition> recognizeImage(final Bitmap bitmap) {
+  public List<Recognition> recognizeImage(final byte[] byteArray) {
     // Log this method so that it can be analyzed with systrace.
     Trace.beginSection("recognizeImage");
 
     Trace.beginSection("preprocessBitmap");
-    convertBitmapToByteBuffer(bitmap);
+    convertBitmapToByteBuffer(byteArray);
     Trace.endSection();
 
     // Run the inference call.

@@ -16,10 +16,11 @@ limitations under the License.
 package com.kesso.mylibrary;
 
 import android.app.Activity;
+
 import java.io.IOException;
 
 /** This TensorFlowLite classifier works with the float MobileNet model. */
-public class ClassifierFloatMobileNet extends Classifier {
+public class MyModel extends Classifier {
 
   /**
    * An array to hold inference results, to be feed into Tensorflow Lite as outputs. This isn't part
@@ -28,11 +29,11 @@ public class ClassifierFloatMobileNet extends Classifier {
   private float[][] labelProbArray = null;
 
   /**
-   * Initializes a {@code ClassifierFloatMobileNet}.
+   * Initializes a {@code MyModel}.
    *
    * @param activity
    */
-  public ClassifierFloatMobileNet(Activity activity, Device device, int numThreads)
+  public MyModel(Activity activity, Device device, int numThreads)
       throws IOException {
     super(activity, device, numThreads);
     labelProbArray = new float[1][getNumLabels()];
@@ -54,7 +55,6 @@ public class ClassifierFloatMobileNet extends Classifier {
     // see build.gradle for where to obtain this file. It should be auto
     // downloaded into assets.
     return "converted_model.tflite";
-    //return "file:///android_asset/converted_model.tflite";
   }
 
   @Override
@@ -64,14 +64,12 @@ public class ClassifierFloatMobileNet extends Classifier {
 
   @Override
   protected int getNumBytesPerChannel() {
-    return 4; // Float.SIZE / Byte.SIZE;
+    return 3;
   }
 
   @Override
   protected void addPixelValue(int pixelValue) {
-    imgData.putFloat(((pixelValue >> 16) & 0xFF) / 255.f);
-    imgData.putFloat(((pixelValue >> 8) & 0xFF) / 255.f);
-    imgData.putFloat((pixelValue & 0xFF) / 255.f);
+    imgData.putInt(pixelValue);
   }
 
   @Override
