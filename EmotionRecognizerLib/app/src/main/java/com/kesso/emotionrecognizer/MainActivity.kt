@@ -1,15 +1,16 @@
 package com.kesso.emotionrecognizer
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import com.kesso.mylibrary.Classifier
-import com.kesso.mylibrary.ImageClassifierFactory
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.log
 
 const val GRAPH_FILE_PATH = "file:///android_asset/converted_model.tflite"
 //const val GRAPH_FILE_PATH = "file:///android_asset/saved_model.pb"
@@ -33,17 +34,11 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        var cl: Classifier = ImageClassifierFactory.create(
-                assets,
-                GRAPH_FILE_PATH,
-                LABELS_FILE_PATH,
-                IMAGE_SIZE,
-                GRAPH_INPUT_NAME,
-                GRAPH_OUTPUT_NAME
-        )
-
-        val r = cl.recognizeImage(Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888))
-        r.confidence
+        var c : Classifier = Classifier.create(this, Classifier.Device.GPU, 1)
+        var b = ByteArray(48*48)
+        var bb = BitmapFactory.decodeByteArray(b, 0, b.size)
+        var answer = c.recognizeImage(bb)
+        answer.size
     }
 
 }
