@@ -1,21 +1,13 @@
 package com.kesso;
 
-import android.opengl.GLSurfaceView;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.constraint.Constraints;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.kesso.er.FaceFrameDrawer.Frame.FaceFrame;
 import com.kesso.er.FaceFrameDrawer.Render.ErRender;
 import com.kesso.er.FaceFrameDrawer.VIew.ErGLSurfaceView;
 import com.kesso.er.Search.Input.BaseInput.IFrame;
@@ -99,30 +91,25 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
             int y1 = face.getY1();
             int y2 = face.getY2();
 
-            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
-            Mat crop = new Mat(frame.getData(), roi);
-            Size sz = new Size(48,48);
-            Mat resize = new Mat();
-            Imgproc.resize(crop, resize, sz);
-
-            byte[] arr = new byte[48*48];
-            resize.get(0 ,0, arr);
-
-            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
-            String s = "";
-            for (Classifier.Recognition r : c){
-                s += r.toString();
-            }
-
-            String finalS = s;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            faces.add(resize);
+//            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
+//            Mat crop = new Mat(frame.getData(), roi);
+//            Size sz = new Size(48,48);
+//            Mat resize = new Mat();
+//            Imgproc.resize(crop, resize, sz);
+//
+//            byte[] arr = new byte[48*48];
+//            resize.get(0 ,0, arr);
+//
+//            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
+//            String s = "";
+//            for (Classifier.Recognition r : c){
+//                s += r.toString();
+//            }
+//
+//            String finalS = s;
+//            runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
+//
+//            faces.add(resize);
 
             float gl_x1, gl_x2, gl_y1, gl_y2;
             float cvHeight = frame.getData().height();
