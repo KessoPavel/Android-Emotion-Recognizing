@@ -7,6 +7,7 @@ import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput
 import com.kesso.facesearchenative.NativeSearcher
 import org.opencv.core.Mat
 import org.opencv.core.MatOfRect
+import java.net.DatagramSocketImplFactory
 
 class Searcher(
         private val nativeSearcher: NativeSearcher):
@@ -49,8 +50,11 @@ class Searcher(
 
     override fun receiveFrame(frame: IFrame) {
         val faces = MatOfRect()
-        nativeSearcher.detect(frame.data, faces)
+        val temp = frame.data
+        nativeSearcher.detect(temp, faces)
         mOutput?.receive(frame, Face.Converter.getFaces(faces))
+        temp.release()
+        frame.data.release()
     }
 
     data class Builder(val context: Context,

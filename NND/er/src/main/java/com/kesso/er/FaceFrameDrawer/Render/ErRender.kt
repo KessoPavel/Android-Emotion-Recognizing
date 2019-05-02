@@ -10,7 +10,7 @@ import java.util.Collections.synchronizedCollection
 import kotlin.collections.ArrayList
 
 
-class ErRender: GLSurfaceView.Renderer {
+class ErRender : GLSurfaceView.Renderer {
     private val modelViewMatrix = floatArrayOf(
             1.0f, 0.0f, 0.0f, 0.0f,
             0.0f, 1.0f, 0.0f, 0.0f,
@@ -26,10 +26,9 @@ class ErRender: GLSurfaceView.Renderer {
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 
-        for (array: FloatArray in faceFrames){
+        for (array: FloatArray in faceFrames) {
             val frame = FaceFrame(FaceFrame.Dot(array[0], array[1]), FaceFrame.Dot(array[2], array[3]), array[4])
             frame.draw(modelViewMatrix)
-
         }
     }
 

@@ -1,6 +1,10 @@
 package com.kesso;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
@@ -20,13 +24,17 @@ import com.kesso.er.Search.SearcherModule;
 import com.kesso.mylibrary.Classifier;
 
 import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements IBaseOutput {
@@ -91,25 +99,29 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
             int y1 = face.getY1();
             int y2 = face.getY2();
 
-//            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
-//            Mat crop = new Mat(frame.getData(), roi);
-//            Size sz = new Size(48,48);
-//            Mat resize = new Mat();
-//            Imgproc.resize(crop, resize, sz);
-//
-//            byte[] arr = new byte[48*48];
-//            resize.get(0 ,0, arr);
-//
-//            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
-//            String s = "";
-//            for (Classifier.Recognition r : c){
-//                s += r.toString();
-//            }
-//
-//            String finalS = s;
-//            runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
-//
-//            faces.add(resize);
+            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
+            Mat crop = new Mat(frame.getData(), roi);
+            Size sz = new Size(48,48);
+            Mat resize = new Mat();
+            Imgproc.resize(crop, resize, sz);
+
+//            Bitmap bitmap = Bitmap.createBitmap(resize.width(), resize.height(), Bitmap.Config.ARGB_8888);
+//            Utils.matToBitmap(resize, bitmap);
+//            save(bitmap);
+
+            byte[] arr = new byte[48*48];
+            resize.get(0,0,arr);
+
+            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
+            String s = "";
+            for (Classifier.Recognition r : c){
+                s += r.toString();
+            }
+
+            String finalS = s;
+            runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
+
+            //faces.add(resize);
 
             float gl_x1, gl_x2, gl_y1, gl_y2;
             float cvHeight = frame.getData().height();
@@ -127,5 +139,72 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         mErRender.getFaceFrames().addAll(faceFrames);
         mGLSurfaceView.requestRender();
         frame.getData().release();
+    }
+
+    public static Bitmap doGreyscale(byte[] array) {
+        // constant factors
+
+
+        // create output bitmap
+        Bitmap bmOut = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
+        // pixel information
+        int A, R, G, B;
+        int pixel;
+
+        // get image size
+        int width = 48;
+        int height = 48;
+
+        // scan through every single pixel
+        for(int x = 0; x < width; ++x) {
+            for(int y = 0; y < height; ++y) {
+                // get one pixel color
+                pixel = array[x*width + y];
+                // retrieve color of all channels
+                A = Color.alpha(pixel);
+                R = Color.red(pixel);
+                G = Color.green(pixel);
+                B = Color.blue(pixel);
+                // take conversion up to one single value
+                // set new pixel color to output bitmap
+                bmOut.setPixel(x, y, Color.argb(A, R, G, B));
+            }
+        }
+
+        // return final image
+        return bmOut;
+    }
+
+    private void save(Bitmap bitmap){
+        FileOutputStream out = null;
+
+        String filename = new Date().getTime() + ".png";
+
+
+        File sd = new File(Environment.getExternalStorageDirectory() + "/frames");
+        boolean success = true;
+        if (!sd.exists()) {
+            success = sd.mkdir();
+        }
+        if (success) {
+            File dest = new File(sd, filename);
+
+            try {
+                out = new FileOutputStream(dest);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+                // PNG is a lossless format, the compression factor (100) is ignored
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
