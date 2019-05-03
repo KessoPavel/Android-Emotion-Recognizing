@@ -20,7 +20,7 @@ import android.app.Activity;
 import java.io.IOException;
 
 /** This TensorFlowLite classifier works with the float MobileNet model. */
-public class MyModel extends Classifier {
+public class MyModel extends MClassifier {
 
   /**
    * An array to hold inference results, to be feed into Tensorflow Lite as outputs. This isn't part

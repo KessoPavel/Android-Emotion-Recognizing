@@ -1,13 +1,11 @@
 package com.kesso.emotionrecognizer
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
-import com.kesso.mylibrary.Classifier
+import com.kesso.mylibrary.MClassifier
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -24,8 +22,8 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        var c : Classifier = Classifier.create(this, Classifier.Device.CPU, 1)
-        var b = ByteArray(48*48)
+        var c : MClassifier = MClassifier.create(this, MClassifier.Device.CPU, 1, MClassifier.Model.TFModel)
+        var b = ByteArray(64*64)
         var answer = c.recognizeImage(b)
         answer.size
     }
