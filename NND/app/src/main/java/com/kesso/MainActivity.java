@@ -1,6 +1,5 @@
 package com.kesso;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,7 +26,6 @@ import com.kesso.er.Search.SearcherModule;
 import com.kesso.mylibrary.Classifier;
 
 import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.core.Size;
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         }
     }
 
-    boolean t = true;
+    boolean t = false;
     @Override
     public void receive(IFrame frame, final List<? extends IFace> searchFaces) {
         List<float[]> faceFrames = new ArrayList<>();
@@ -102,30 +100,17 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
             int y1 = face.getY1();
             int y2 = face.getY2();
 
-            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
-            Mat crop = new Mat(frame.getData(), roi);
-            Size sz = new Size(48,48);
-            Mat resize = new Mat();
-            Imgproc.resize(crop, resize, sz);
+            RunnableM runnableM = new RunnableM();
+            runnableM.fr = frame.getData().clone();
+            runnableM.x1 = x1;
+            runnableM.x2 = x2;
+            runnableM.y1 = y1;
+            runnableM.y2 = y2;
 
-//            Bitmap bitmap = Bitmap.createBitmap(resize.width(), resize.height(), Bitmap.Config.ARGB_8888);
-//            Utils.matToBitmap(resize, bitmap);
-//            save(bitmap);
-
-            byte[] arr = new byte[48*48];
-            resize.get(0,0,arr);
-
-            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
-            String s = "";
-            for (Classifier.Recognition r : c){
-                s += r.toString();
+            if (!t) {
+                Thread thread = new Thread(runnableM);
+                thread.start();
             }
-
-            String finalS = s;
-            runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
-
-            //faces.add(resize);
-
             float gl_x1, gl_x2, gl_y1, gl_y2;
             float cvHeight = frame.getData().height();
             float cvWidth = frame.getData().width();
@@ -144,10 +129,38 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         frame.getData().release();
     }
 
-    public static Bitmap doGreyscale(byte[] array) {
-        // constant factors
+    class RunnableM implements Runnable {
+        public Mat fr;
+        public int x1;
+        public int y1;
+        public int x2;
+        public int y2;
 
+        @Override
+        public void run() {
+            t = true;
+            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
+            Mat crop = new Mat(fr, roi);
+            Size sz = new Size(48,48);
+            Mat resize = new Mat();
+            Imgproc.resize(crop, resize, sz);
 
+            byte[] arr = new byte[48*48];
+            resize.get(0,0,arr);
+
+            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
+            String s = "";
+            for (Classifier.Recognition r : c){
+                s += r.toString();
+            }
+
+            String finalS = s;
+            runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
+            t = false;
+        }
+    }
+
+    private static Bitmap doGreyscale(byte[] array) {
         // create output bitmap
         Bitmap bmOut = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
         // pixel information
