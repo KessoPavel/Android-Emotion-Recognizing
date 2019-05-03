@@ -1,13 +1,12 @@
 package com.kesso.er.Search.Searcher
 
 import android.content.Context
+import com.kesso.er.Detector.input.DetectorInput.Face
 import com.kesso.er.Search.Input.BaseInput.IFrame
-import com.kesso.er.Search.Ouptut.BaseOutput.Face
 import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput
 import com.kesso.facesearchenative.NativeSearcher
 import org.opencv.core.Mat
 import org.opencv.core.MatOfRect
-import java.net.DatagramSocketImplFactory
 
 class Searcher(
         private val nativeSearcher: NativeSearcher):
@@ -52,7 +51,7 @@ class Searcher(
         val faces = MatOfRect()
         val temp = frame.data
         nativeSearcher.detect(temp, faces)
-        mOutput?.receive(frame, Face.Converter.getFaces(faces))
+        mOutput?.receive(frame, Face.Converter.getFaces(faces, frame))
         temp.release()
         frame.data.release()
     }
