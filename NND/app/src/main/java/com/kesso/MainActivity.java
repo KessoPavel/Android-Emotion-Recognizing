@@ -11,15 +11,15 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
-import com.kesso.er.Detector.input.IDetectorInput.IFace;
-import com.kesso.er.FaceFrameDrawer.Render.ErRender;
-import com.kesso.er.FaceFrameDrawer.VIew.ErGLSurfaceView;
-import com.kesso.er.Search.Input.BaseInput.IFrame;
-import com.kesso.er.Search.Input.CameraInput.ErCamera.ErCamera;
-import com.kesso.er.Search.Input.CameraInput.ICameraBaseInput;
-import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput;
-import com.kesso.er.Search.Searcher.Searcher;
-import com.kesso.er.Search.SearcherModule;
+import com.kesso.er.detector.input.IDetectorInput.IFace;
+import com.kesso.er.openGLWrapper.render.ErRender;
+import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
+import com.kesso.er.search.input.BaseInput.IFrame;
+import com.kesso.er.search.input.CameraInput.ErCamera.ErCamera;
+import com.kesso.er.search.input.CameraInput.ICameraBaseInput;
+import com.kesso.er.search.output.BaseOutput.IBaseOutput;
+import com.kesso.er.search.searcher.Searcher;
+import com.kesso.er.search.SearcherModule;
 import com.kesso.mylibrary.Classifier;
 
 import org.opencv.android.CameraBridgeViewBase;
