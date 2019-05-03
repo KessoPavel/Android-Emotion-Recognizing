@@ -1,7 +1,7 @@
 package com.kesso.er.Search.Searcher
 
 import android.content.Context
-import com.kesso.er.Detector.input.DetectorInput.Face
+import com.kesso.er.Detector.input.IDetectorInput.Face
 import com.kesso.er.Search.Input.BaseInput.IFrame
 import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput
 import com.kesso.facesearchenative.NativeSearcher

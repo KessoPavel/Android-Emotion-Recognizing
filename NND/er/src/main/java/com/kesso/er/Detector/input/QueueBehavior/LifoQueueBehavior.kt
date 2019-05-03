@@ -1,15 +1,15 @@
 package com.kesso.er.Detector.input.QueueBehavior
 
-import com.kesso.er.Detector.input.DetectorInput.IFace
+import com.kesso.er.Detector.input.IDetectorInput.IFace
 
 class LifoQueueBehavior: IQueueBehavior {
-    var currentFace: IFace? = null
+    var currentFace: List<IFace>? = null
 
-    override fun addFace(face: IFace) {
+    override fun addFace(face: List<IFace>) {
         currentFace = face
     }
 
-    override fun getNext(): IFace? {
+    override fun getNext(): List<IFace>? {
         val temp = currentFace
         currentFace = null
         return temp

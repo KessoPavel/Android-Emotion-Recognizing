@@ -1,4 +1,4 @@
-package com.kesso.er.Detector.input.DetectorInput
+package com.kesso.er.Detector.input.IDetectorInput
 
 interface IFaceListener {
     fun receive(faceList : List<IFace>)

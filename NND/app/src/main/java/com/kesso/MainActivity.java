@@ -11,13 +11,10 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Toast;
 
-import com.kesso.er.Detector.input.DetectorInput.Face;
-import com.kesso.er.Detector.input.DetectorInput.IFace;
-import com.kesso.er.Detector.input.QueueBehavior.LifoQueueBehavior;
+import com.kesso.er.Detector.input.IDetectorInput.IFace;
 import com.kesso.er.FaceFrameDrawer.Render.ErRender;
 import com.kesso.er.FaceFrameDrawer.VIew.ErGLSurfaceView;
 import com.kesso.er.Search.Input.BaseInput.IFrame;
-import com.kesso.er.Search.Input.CameraInput.ErCamera.CameraFrame;
 import com.kesso.er.Search.Input.CameraInput.ErCamera.ErCamera;
 import com.kesso.er.Search.Input.CameraInput.ICameraBaseInput;
 import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput;

@@ -1,4 +1,4 @@
-package com.kesso.er.Detector.input.DetectorInput
+package com.kesso.er.Detector.input.IDetectorInput
 
 import com.kesso.er.Search.Input.BaseInput.IFrame
 import org.opencv.core.MatOfRect
