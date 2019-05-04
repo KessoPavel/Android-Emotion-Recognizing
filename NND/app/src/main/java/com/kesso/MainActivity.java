@@ -21,6 +21,7 @@ import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput;
 import com.kesso.er.Search.Searcher.Searcher;
 import com.kesso.er.Search.SearcherModule;
 import com.kesso.mylibrary.Classifier;
+import com.kesso.mylibrary.MClassifier;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Mat;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
     private int height;
     private int width;
 
-    Classifier classifier;
+    MClassifier classifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         ((Searcher)searcherModule.getSearcher()).setMinFaceSize((float) 0.2);
 
         try {
-             classifier = Classifier.create(this, Classifier.Device.CPU, 1);
+             classifier = MClassifier.create(this, MClassifier.Device.CPU, 1, MClassifier.Model.TFModel);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,21 +139,28 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
             t = true;
             Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
             Mat crop = new Mat(fr, roi);
-            Size sz = new Size(48,48);
+            Size sz = new Size(64,64);
             Mat resize = new Mat();
             Imgproc.resize(crop, resize, sz);
 
-            byte[] arr = new byte[48*48];
+            byte[] arr = new byte[64*64];
             resize.get(0,0,arr);
 
-            List<Classifier.Recognition> c =  classifier.recognizeImage(arr);
+            List<MClassifier.Recognition> c =  classifier.recognizeImage(arr);
             String s = "";
-            for (Classifier.Recognition r : c){
+            for (MClassifier.Recognition r : c){
                 s += r.toString();
             }
 
             String finalS = s;
             runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
+            synchronized (this) {
+                try {
+                    this.wait(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             t = false;
         }
     }

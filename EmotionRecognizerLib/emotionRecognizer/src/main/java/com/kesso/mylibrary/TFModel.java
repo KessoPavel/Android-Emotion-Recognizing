@@ -41,6 +41,9 @@ public class TFModel extends MClassifier {
     @Override
     protected void addPixelValue(int pixelValue) {
         float f = (float) pixelValue;
+        f /= 255;
+        f -= 0.5;
+        f *= 2;
         imgData.putFloat(f);
     }
 
