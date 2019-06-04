@@ -29,7 +29,11 @@ class EmotionPredictorWrapper (val context: Context,
     }
 
     fun open(){
-        detector?.start()
+        val r = Runnable {
+            detector?.start()
+        }
+        val t = Thread(r)
+        t.start()
     }
 
     fun close(){
