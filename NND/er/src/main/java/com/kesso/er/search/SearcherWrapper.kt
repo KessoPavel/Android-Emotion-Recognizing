@@ -8,7 +8,7 @@ import com.kesso.er.search.searcher.ISearcher
 import com.kesso.er.search.searcher.Searcher
 import org.opencv.android.CameraBridgeViewBase
 
-class SearcherModule(val context: Context, val cameraView: CameraBridgeViewBase, val output: IBaseOutput) {
+class SearcherWrapper(val context: Context, val cameraView: CameraBridgeViewBase, val output: IBaseOutput) {
     var input: IBaseInput? = null
     var searcher: ISearcher? = null
 
