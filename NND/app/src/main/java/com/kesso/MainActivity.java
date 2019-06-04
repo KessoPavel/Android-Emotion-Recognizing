@@ -8,7 +8,10 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kesso.er.FaceFrameDrawer.Render.ErRender;
@@ -44,6 +47,11 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
     private int height;
     private int width;
 
+    private TextView size;
+    private TextView count;
+    private SeekBar bsize;
+    private SeekBar bcount;
+
     MClassifier classifier;
 
     @Override
@@ -55,6 +63,43 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        size = findViewById(R.id.size);
+        count = findViewById(R.id.count);
+        bsize = findViewById(R.id.bsize);
+        bcount = findViewById(R.id.bcount);
+        bsize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                size.setText("" + progress * 10);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        bcount.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                count.setText("" + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         mGLSurfaceView = new ErGLSurfaceView(this);
         mGLSurfaceView.setId(View.generateViewId());
@@ -98,27 +143,34 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
             int y1 = face.getY1();
             int y2 = face.getY2();
 
+            float cvHeight = frame.getData().height();
+            float cvWidth = frame.getData().width();
+
             RunnableM runnableM = new RunnableM();
             runnableM.fr = frame.getData().clone();
             runnableM.x1 = x1;
             runnableM.x2 = x2;
             runnableM.y1 = y1;
             runnableM.y2 = y2;
+            runnableM.x = (int) (x1 * (cvWidth / width));
+            runnableM.y = (int) (y1 * (cvHeight / height));
+
 
             if (!t) {
                 Thread thread = new Thread(runnableM);
                 thread.start();
             }
             float gl_x1, gl_x2, gl_y1, gl_y2;
-            float cvHeight = frame.getData().height();
-            float cvWidth = frame.getData().width();
+
 
             gl_x1 = ((2 * (x1 / cvWidth)) - 1) * (cvWidth / width);
             gl_x2 = ((2 * (x2 / cvWidth)) - 1) * (cvWidth / width);
             gl_y1 = ((2 * (y1 / cvHeight)) - 1) * (cvHeight / height);
             gl_y2 = ((2 * (y2 / cvHeight)) - 1) * (cvHeight / height);
 
+
             faceFrames.add(new float[]{gl_x1, -gl_y1, gl_x2, -gl_y2, 0.01f});
+            break;
         }
 
         mErRender.getFaceFrames().clear();
@@ -133,98 +185,45 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         public int y1;
         public int x2;
         public int y2;
+        public int x;
+        public int y;
 
         @Override
         public void run() {
-            t = true;
-            Rect roi = new Rect(x1,y1, x2-x1, y2-y1);
-            Mat crop = new Mat(fr, roi);
-            Size sz = new Size(64,64);
-            Mat resize = new Mat();
-            Imgproc.resize(crop, resize, sz);
-
-            byte[] arr = new byte[64*64];
-            resize.get(0,0,arr);
-
-            List<MClassifier.Recognition> c =  classifier.recognizeImage(arr);
-            String s = "";
-            for (MClassifier.Recognition r : c){
-                s += r.toString();
-            }
-
-            String finalS = s;
-            runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show());
-            synchronized (this) {
-                try {
-                    this.wait(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            t = false;
-        }
-    }
-
-    private static Bitmap doGreyscale(byte[] array) {
-        // create output bitmap
-        Bitmap bmOut = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
-        // pixel information
-        int A, R, G, B;
-        int pixel;
-
-        // get image size
-        int width = 48;
-        int height = 48;
-
-        // scan through every single pixel
-        for(int x = 0; x < width; ++x) {
-            for(int y = 0; y < height; ++y) {
-                // get one pixel color
-                pixel = array[x*width + y];
-                // retrieve color of all channels
-                A = Color.alpha(pixel);
-                R = Color.red(pixel);
-                G = Color.green(pixel);
-                B = Color.blue(pixel);
-                // take conversion up to one single value
-                // set new pixel color to output bitmap
-                bmOut.setPixel(x, y, Color.argb(A, R, G, B));
-            }
-        }
-
-        // return final image
-        return bmOut;
-    }
-
-    private void save(Bitmap bitmap){
-        FileOutputStream out = null;
-
-        String filename = new Date().getTime() + ".png";
-
-
-        File sd = new File(Environment.getExternalStorageDirectory() + "/frames");
-        boolean success = true;
-        if (!sd.exists()) {
-            success = sd.mkdir();
-        }
-        if (success) {
-            File dest = new File(sd, filename);
-
             try {
-                out = new FileOutputStream(dest);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-                // PNG is a lossless format, the compression factor (100) is ignored
+                t = true;
+                Rect roi = new Rect(x1, y1, x2 - x1, y2 - y1);
+                Mat crop = new Mat(fr, roi);
+                Size sz = new Size(64, 64);
+                Mat resize = new Mat();
+                Imgproc.resize(crop, resize, sz);
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    if (out != null) {
-                        out.close();
+                byte[] arr = new byte[64 * 64];
+                resize.get(0, 0, arr);
+
+                List<MClassifier.Recognition> c = classifier.recognizeImage(arr);
+                String s = c.get(0).getTitle();
+
+                String finalS = s;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.BOTTOM, x1, y2);
+                        toast.show();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                });
+                //runOnUiThread(() -> Toast.makeText(MainActivity.this, finalS, Toast.LENGTH_SHORT).show(););
+//            synchronized (this) {
+//                try {
+//                    this.wait(500);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+                t = false;
+            }catch (Exception ignore){
+
             }
         }
     }
