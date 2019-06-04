@@ -17,6 +17,10 @@ class EmotionPredictorWrapperBuilder {
     fun activity(activity: Activity) = apply { this.activity = activity }
 
     fun build(): EmotionPredictorWrapper{
-        return EmotionPredictorWrapper()
+        return EmotionPredictorWrapper(
+                context =       context!!,
+                activity =      activity!!,
+                output =        output!!,
+                device =        device!!)
     }
 }

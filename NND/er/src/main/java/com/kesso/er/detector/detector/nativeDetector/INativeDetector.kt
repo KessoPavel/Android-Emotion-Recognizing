@@ -9,4 +9,7 @@ interface INativeDetector {
 
     fun load()
     fun detect(face: ByteArray): String
+    fun stop()
+    fun resume()
+    fun pause()
 }

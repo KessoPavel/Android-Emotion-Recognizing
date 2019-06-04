@@ -7,8 +7,9 @@ import com.kesso.er.detector.input.QueueBehavior.IQueueBehavior
 import com.kesso.er.search.input.BaseInput.IFrame
 
 class DetectorInput(
-        override var listener: IFaceListener?,
         override var queueBehavior: IQueueBehavior) : IDetectorInput {
+
+    override var listener: IFaceListener? = null
 
     private var request: Boolean = false
 

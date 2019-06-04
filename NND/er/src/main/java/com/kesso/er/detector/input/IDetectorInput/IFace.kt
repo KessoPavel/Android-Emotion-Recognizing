@@ -6,7 +6,7 @@ interface IFace {
     var data: ByteArray
     val width: Int
     val height: Int
-    val emotion: Int
+    var emotion: String
 
     val frame: IFrame
     val x1: Int
