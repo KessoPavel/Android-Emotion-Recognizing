@@ -4,6 +4,8 @@ import com.kesso.er.detector.input.IDetectorInput.IDetectorInput
 import com.kesso.er.detector.input.IDetectorInput.IFace
 import com.kesso.er.detector.input.IDetectorInput.IFaceListener
 import com.kesso.er.detector.input.QueueBehavior.IQueueBehavior
+import com.kesso.er.search.input.BaseInput.IFrame
+
 class DetectorInput(
         override var listener: IFaceListener?,
         override var queueBehavior: IQueueBehavior) : IDetectorInput {
@@ -24,7 +26,7 @@ class DetectorInput(
         return faces
     }
 
-    override fun receive(searchFaces: List<IFace>) {
+    override fun receive(frame: IFrame, searchFaces: List<IFace>) {
         if (request){
             request = false
             listener?.receive(preworkFaces(searchFaces))
