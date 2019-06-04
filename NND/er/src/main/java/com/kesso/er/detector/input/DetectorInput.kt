@@ -12,24 +12,23 @@ class DetectorInput(
 
     private var request: Boolean = false
 
-
     override fun requestData() {
         val faces = queueBehavior.getNext()
         if (faces == null){
             request = true
         } else {
-            listener?.receive(preworkFaces(faces))
+            listener?.receive(preprocessFaces(faces))
         }
     }
 
-    private fun preworkFaces(faces: List<IFace>): List<IFace> {
+    private fun preprocessFaces(faces: List<IFace>): List<IFace> {
         return faces
     }
 
     override fun receive(frame: IFrame, searchFaces: List<IFace>) {
         if (request){
             request = false
-            listener?.receive(preworkFaces(searchFaces))
+            listener?.receive(preprocessFaces(searchFaces))
         } else {
             queueBehavior.addFace(searchFaces)
         }
