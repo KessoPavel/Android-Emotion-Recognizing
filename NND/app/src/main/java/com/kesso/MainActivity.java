@@ -14,15 +14,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kesso.er.FaceFrameDrawer.Render.ErRender;
-import com.kesso.er.FaceFrameDrawer.VIew.ErGLSurfaceView;
-import com.kesso.er.Search.Input.BaseInput.IFrame;
-import com.kesso.er.Search.Input.CameraInput.ErCamera.ErCamera;
-import com.kesso.er.Search.Input.CameraInput.ICameraBaseInput;
-import com.kesso.er.Search.Ouptut.BaseOutput.Face;
-import com.kesso.er.Search.Ouptut.BaseOutput.IBaseOutput;
-import com.kesso.er.Search.Searcher.Searcher;
-import com.kesso.er.Search.SearcherModule;
+import com.kesso.er.detector.input.IDetectorInput.IFace;
+import com.kesso.er.openGLWrapper.render.ErRender;
+import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
+import com.kesso.er.search.input.BaseInput.IFrame;
+import com.kesso.er.search.input.CameraInput.ErCamera.ErCamera;
+import com.kesso.er.search.input.CameraInput.ICameraBaseInput;
+import com.kesso.er.search.output.BaseOutput.IBaseOutput;
+import com.kesso.er.search.searcher.Searcher;
+import com.kesso.er.search.SearcherModule;
 import com.kesso.mylibrary.Classifier;
 import com.kesso.mylibrary.MClassifier;
 
@@ -132,12 +132,12 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
 
     boolean t = false;
     @Override
-    public void receive(IFrame frame, final List<Face> searchFaces) {
+    public void receive(IFrame frame, final List<? extends IFace> searchFaces) {
         List<float[]> faceFrames = new ArrayList<>();
         List<Mat> faces = new ArrayList<>();
 
 
-        for (Face face : searchFaces){
+        for (IFace face : searchFaces){
             int x1 = face.getX1();
             int x2 = face.getX2();
             int y1 = face.getY1();
