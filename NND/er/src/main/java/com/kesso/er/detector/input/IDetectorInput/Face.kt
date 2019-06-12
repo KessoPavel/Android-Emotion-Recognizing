@@ -8,7 +8,7 @@ class Face(
         override var data: ByteArray = ByteArray(48*48),
         override val width: Int = 48,
         override val height: Int = 48,
-        override val emotion: Int = -1,
+        override var emotion: String = "",
         override val frame: IFrame,
         override val x1: Int,
         override val x2: Int,

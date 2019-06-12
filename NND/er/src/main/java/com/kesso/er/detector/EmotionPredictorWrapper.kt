@@ -10,12 +10,12 @@ import com.kesso.er.detector.input.DetectorInput
 import com.kesso.er.detector.input.IDetectorInput.IDetectorInput
 import com.kesso.er.detector.input.QueueBehavior.QueueBehaviorFactory
 import com.kesso.er.detector.output.IDetectorOutput
-import com.kesso.mylibrary.MClassifier
+import com.kesso.mylibrary.EmotionClassifier
 
 class EmotionPredictorWrapper (val context: Context,
                                val activity: Activity,
                                val output: IDetectorOutput,
-                               val device: MClassifier.Device) {
+                               val device: EmotionClassifier.Device) {
     var input: IDetectorInput? = null
     var detector: IDetector? = null
     var nativeDetector: INativeDetector? = null

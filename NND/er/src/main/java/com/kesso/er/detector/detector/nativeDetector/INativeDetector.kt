@@ -1,11 +1,11 @@
 package com.kesso.er.detector.detector.nativeDetector
 
 import android.app.Activity
-import com.kesso.mylibrary.MClassifier
+import com.kesso.mylibrary.EmotionClassifier
 
 interface INativeDetector {
     val activity: Activity
-    val device: MClassifier.Device
+    val device: EmotionClassifier.Device
 
     fun load()
     fun detect(face: ByteArray): String

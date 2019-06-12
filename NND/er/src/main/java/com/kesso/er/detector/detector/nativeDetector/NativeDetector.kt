@@ -1,17 +1,17 @@
 package com.kesso.er.detector.detector.nativeDetector
 
 import android.app.Activity
-import com.kesso.mylibrary.MClassifier
+import com.kesso.mylibrary.EmotionClassifier
 
 class NativeDetector(
         override val activity: Activity,
-        override val device: MClassifier.Device)
+        override val device: EmotionClassifier.Device)
     : INativeDetector {
 
-    private lateinit var classifier: MClassifier
+    private lateinit var classifier: EmotionClassifier
 
     override fun load() {
-        classifier = MClassifier.create(activity, MClassifier.Device.CPU, 1, MClassifier.Model.TFModel)
+        classifier = EmotionClassifier.create(activity, EmotionClassifier.Device.CPU, 1, EmotionClassifier.Model.TFModel)
     }
 
     override fun detect(face: ByteArray): String {

@@ -21,7 +21,7 @@ import com.kesso.er.search.input.CameraInput.ICameraBaseInput;
 import com.kesso.er.search.output.BaseOutput.IBaseOutput;
 import com.kesso.er.search.searcher.Searcher;
 import com.kesso.er.search.SearcherWrapper;
-import com.kesso.mylibrary.MClassifier;
+import com.kesso.mylibrary.EmotionClassifier;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Mat;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
     private SeekBar bsize;
     private SeekBar bcount;
 
-    MClassifier classifier;
+    EmotionClassifier classifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
         ((Searcher) searcherWrapper.getSearcher()).setMinFaceSize((float) 0.2);
 
         try {
-             classifier = MClassifier.create(this, MClassifier.Device.CPU, 1, MClassifier.Model.TFModel);
+             classifier = EmotionClassifier.create(this, EmotionClassifier.Device.CPU, 1, EmotionClassifier.Model.TFModel);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements IBaseOutput {
                 byte[] arr = new byte[64 * 64];
                 resize.get(0, 0, arr);
 
-                List<MClassifier.Recognition> c = classifier.recognizeImage(arr);
+                List<EmotionClassifier.Recognition> c = classifier.recognizeImage(arr);
                 String s = c.get(0).getTitle();
 
                 String finalS = s;

@@ -40,7 +40,7 @@ import org.tensorflow.lite.gpu.GpuDelegate;
 /**
  * A classifier specialized to label images using TensorFlow Lite.
  */
-public abstract class MClassifier {
+public abstract class EmotionClassifier {
 
     /**
      * The model type used for classification.
@@ -114,7 +114,7 @@ public abstract class MClassifier {
      * @param numThreads The number of threads to use for classification.
      * @return A classifier with the desired configuration.
      */
-    public static MClassifier create(Activity activity, Device device, int numThreads, Model model)
+    public static EmotionClassifier create(Activity activity, Device device, int numThreads, Model model)
             throws IOException {
         if (model == Model.MYModel) {
             return new MyModel(activity, device, numThreads);
@@ -125,7 +125,7 @@ public abstract class MClassifier {
     }
 
     /**
-     * An immutable result returned by a MClassifier describing what was recognized.
+     * An immutable result returned by a EmotionClassifier describing what was recognized.
      */
     public static class Recognition {
         /**
@@ -201,9 +201,9 @@ public abstract class MClassifier {
     }
 
     /**
-     * Initializes a {@code MClassifier}.
+     * Initializes a {@code EmotionClassifier}.
      */
-    protected MClassifier(Activity activity, Device device, int numThreads) throws IOException {
+    protected EmotionClassifier(Activity activity, Device device, int numThreads) throws IOException {
         tfliteModel = loadModelFile(activity);
         switch (device) {
             case NNAPI:
