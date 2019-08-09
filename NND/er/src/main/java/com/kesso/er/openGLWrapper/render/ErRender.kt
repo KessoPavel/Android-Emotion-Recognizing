@@ -22,6 +22,10 @@ class ErRender : GLSurfaceView.Renderer {
         //faceFrames += FaceFrame(FaceFrame.Dot(-0.636824f, -0.5868056f), FaceFrame.Dot(-0.2804054f, 0.14583337f), 0.02f)
     }
 
+    fun clear(){
+        faceFrames = Collections.synchronizedCollection(ArrayList<FloatArray>())
+    }
+
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
 

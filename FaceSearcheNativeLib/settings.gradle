@@ -1,2 +1,2 @@
-include ':app', ':facesearchenative'
+include ':facesearchenative'
 include ':openCVLibrary'

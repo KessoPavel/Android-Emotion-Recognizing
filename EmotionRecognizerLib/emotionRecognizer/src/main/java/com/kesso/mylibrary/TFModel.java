@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import java.io.IOException;
 
-public class TFModel extends MClassifier {
+public class TFModel extends EmotionClassifier {
     private float[][] labelProbArray = null;
 
 

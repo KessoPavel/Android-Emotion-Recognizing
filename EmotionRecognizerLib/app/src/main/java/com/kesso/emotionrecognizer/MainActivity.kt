@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
-import com.kesso.mylibrary.MClassifier
+import com.kesso.mylibrary.EmotionClassifier
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
-        var c : MClassifier = MClassifier.create(this, MClassifier.Device.CPU, 1, MClassifier.Model.TFModel)
+        var c : EmotionClassifier = EmotionClassifier.create(this, EmotionClassifier.Device.CPU, 1, EmotionClassifier.Model.TFModel)
         var b = ByteArray(64*64)
         var answer = c.recognizeImage(b)
         answer.size

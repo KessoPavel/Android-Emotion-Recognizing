@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.kesso.er.detector.input.IDetectorInput.IFace;
 import com.kesso.er.openGLWrapper.render.ErRender;
 import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
+<<<<<<< HEAD
 import com.kesso.er.search.input.baseInput.IFrame;
 import com.kesso.er.search.input.cameraInput.cameraWrapper.ErCamera;
 import com.kesso.er.search.input.cameraInput.ICameraBaseInput;
@@ -21,6 +22,16 @@ import com.kesso.er.search.output.baseOutput.IBaseSearcherOutput;
 import com.kesso.er.search.searcher.Searcher;
 import com.kesso.er.search.SearcherModule;
 import com.kesso.mylibrary.MClassifier;
+=======
+import com.kesso.er.search.SearcherWrapperBuilder;
+import com.kesso.er.search.input.BaseInput.IFrame;
+import com.kesso.er.search.input.CameraInput.ErCamera.ErCamera;
+import com.kesso.er.search.input.CameraInput.ICameraBaseInput;
+import com.kesso.er.search.output.BaseOutput.IBaseOutput;
+import com.kesso.er.search.searcher.Searcher;
+import com.kesso.er.search.SearcherWrapper;
+import com.kesso.mylibrary.EmotionClassifier;
+>>>>>>> e4830639ea0791aa3fc426aeb4955b4c8f703e6c
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Mat;
@@ -45,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements IBaseSearcherOutp
     private SeekBar bsize;
     private SeekBar bcount;
 
-    MClassifier classifier;
+    EmotionClassifier classifier;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,17 +118,23 @@ public class MainActivity extends AppCompatActivity implements IBaseSearcherOutp
 
         mErRender = mGLSurfaceView.getErRender();
 
+        //SearcherWrapper crate & init
         cameraBridgeViewBase = findViewById(R.id.fd_activity_surface_view);
-        SearcherModule searcherModule = new SearcherModule(this, cameraBridgeViewBase, this);
-        searcherModule.init();
-        searcherModule.open();
+        SearcherWrapperBuilder searcherWrapperBuilder = new SearcherWrapperBuilder();
+        searcherWrapperBuilder.setContext(this);
+        searcherWrapperBuilder.setView(cameraBridgeViewBase);
+        searcherWrapperBuilder.setOutput(this);
+        SearcherWrapper searcherWrapper = searcherWrapperBuilder.build();
+        searcherWrapper.init();
 
-        ICameraBaseInput iCameraBaseInput = (ICameraBaseInput) searcherModule.getInput();
+        searcherWrapper.open();
+
+        ICameraBaseInput iCameraBaseInput = (ICameraBaseInput) searcherWrapper.getInput();
         iCameraBaseInput.setCurrentCamera(ErCamera.FRONT);
-        ((Searcher)searcherModule.getSearcher()).setMinFaceSize((float) 0.2);
+        ((Searcher) searcherWrapper.getSearcher()).setMinFaceSize((float) 0.2);
 
         try {
-             classifier = MClassifier.create(this, MClassifier.Device.CPU, 1, MClassifier.Model.TFModel);
+             classifier = EmotionClassifier.create(this, EmotionClassifier.Device.CPU, 1, EmotionClassifier.Model.TFModel);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -194,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements IBaseSearcherOutp
                 byte[] arr = new byte[64 * 64];
                 resize.get(0, 0, arr);
 
-                List<MClassifier.Recognition> c = classifier.recognizeImage(arr);
+                List<EmotionClassifier.Recognition> c = classifier.recognizeImage(arr);
                 String s = c.get(0).getTitle();
 
                 String finalS = s;

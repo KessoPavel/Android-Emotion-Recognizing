@@ -22,6 +22,7 @@ android {
         pickFirst "lib/x86/libdetection_based_tracker.so"
         pickFirst "lib/x86_64/libdetection_based_tracker.so"
         pickFirst "lib/arm64-v8a/libdetection_based_tracker.so"
+        exclude 'META-INF/emotionRecognizer_debug.kotlin_module'
     }
 
     aaptOptions {
@@ -34,9 +35,13 @@ android {
 }
 
 dependencies {
+<<<<<<< HEAD
     implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+=======
+    //implementation fileTree(include: ['*.aar'], dir: 'libs')
+>>>>>>> e4830639ea0791aa3fc426aeb4955b4c8f703e6c
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
