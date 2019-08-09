@@ -1,10 +1,10 @@
 package com.kesso.er.search.searcher
 
-import com.kesso.er.search.input.BaseInput.IDataInputListener
-import com.kesso.er.search.output.BaseOutput.IBaseOutput
+import com.kesso.er.search.input.baseInput.IDataInputListener
+import com.kesso.er.search.output.baseOutput.IBaseSearcherOutput
 
 interface ISearcher: IDataInputListener {
-    fun setOutput(output: IBaseOutput)
+    val searcherOutput: IBaseSearcherOutput?
     fun start()
     fun stop()
     fun pause()

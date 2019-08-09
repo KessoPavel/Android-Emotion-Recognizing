@@ -1,4 +1,4 @@
-package com.kesso.er.search.input.CameraInput.ErCamera
+package com.kesso.er.search.input.cameraInput.cameraWrapper
 
 enum class ErCamera {
     BASE, FRONT;

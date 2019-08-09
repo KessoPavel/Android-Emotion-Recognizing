@@ -1,12 +1,12 @@
 package com.kesso.er.detector.input
 
-import com.kesso.er.detector.input.IDetectorInput.IDetectorInput
+import com.kesso.er.detector.input.IDetectorInput.IDetectorInputSearcher
 import com.kesso.er.detector.input.IDetectorInput.IFace
 import com.kesso.er.detector.input.IDetectorInput.IFaceListener
 import com.kesso.er.detector.input.QueueBehavior.IQueueBehavior
 class DetectorInput(
         override var listener: IFaceListener?,
-        override var queueBehavior: IQueueBehavior) : IDetectorInput {
+        override var queueBehavior: IQueueBehavior) : IDetectorInputSearcher {
 
     private var request: Boolean = false
 

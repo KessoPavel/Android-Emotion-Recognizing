@@ -1,14 +1,18 @@
 package com.kesso.er.search
 
 import android.content.Context
-import com.kesso.er.search.input.BaseInput.IBaseInput
-import com.kesso.er.search.input.CameraInput.CameraBaseInput
-import com.kesso.er.search.output.BaseOutput.IBaseOutput
+import com.kesso.er.search.input.baseInput.IBaseInput
+import com.kesso.er.search.input.cameraInput.CameraBaseInput
+import com.kesso.er.search.output.baseOutput.IBaseSearcherOutput
 import com.kesso.er.search.searcher.ISearcher
 import com.kesso.er.search.searcher.Searcher
 import org.opencv.android.CameraBridgeViewBase
 
-class SearcherModule(val context: Context, val cameraView: CameraBridgeViewBase, val output: IBaseOutput) {
+class SearcherModule(
+        val context: Context,
+        val cameraView: CameraBridgeViewBase,
+        val searcherOutput: IBaseSearcherOutput) {
+
     var input: IBaseInput? = null
     var searcher: ISearcher? = null
 
@@ -16,7 +20,7 @@ class SearcherModule(val context: Context, val cameraView: CameraBridgeViewBase,
         input = CameraBaseInput(cameraView)
         searcher = Searcher.Builder(
                 context = context,
-                output = output
+                searcherOutput = searcherOutput
         ).build()
 
         input?.setDataInputListener(searcher as Searcher)

@@ -1,9 +1,9 @@
 package com.kesso.er.search.searcher
 
 import android.content.Context
-import com.kesso.er.detector.input.IDetectorInput.Face
-import com.kesso.er.search.input.BaseInput.IFrame
-import com.kesso.er.search.output.BaseOutput.IBaseOutput
+import com.kesso.er.face.Face
+import com.kesso.er.frame.IBaseFrame
+import com.kesso.er.search.output.baseOutput.IBaseSearcherOutput
 import com.kesso.facesearchenative.NativeSearcher
 import org.opencv.core.Mat
 import org.opencv.core.MatOfRect
@@ -11,7 +11,6 @@ import org.opencv.core.MatOfRect
 class Searcher(
         private val nativeSearcher: NativeSearcher):
         ISearcher {
-    private var mOutput: IBaseOutput? = null
     private var mGray: Mat? = null
 
     var minFaceSize: Float = 0.0f
@@ -27,9 +26,7 @@ class Searcher(
             }
         }
 
-    override fun setOutput(output: IBaseOutput) {
-        mOutput = output
-    }
+    override var searcherOutput: IBaseSearcherOutput? = null
 
     override fun start() {
         nativeSearcher.start()
@@ -47,26 +44,29 @@ class Searcher(
         nativeSearcher.resume()
     }
 
-    override fun receiveFrame(frame: IFrame) {
+    override fun receiveFrame(frame: IBaseFrame) {
         val faces = MatOfRect()
         val temp = frame.data
+
         nativeSearcher.detect(temp, faces)
-        mOutput?.receive(frame, Face.Converter.getFaces(faces, frame))
+        frame.faces = Face.getFaces(faces)
+        searcherOutput?.receive(frame)
+
         temp.release()
         frame.data.release()
     }
 
     data class Builder(val context: Context,
                        var minFaceSize: Float = 0.2f,
-                       var output: IBaseOutput){
+                       var searcherOutput: IBaseSearcherOutput){
         fun minFaceSize(minFaceSize: Float) = apply { this.minFaceSize = minFaceSize }
-        fun output(output: IBaseOutput) = apply { this.output = output}
+        fun output(searcherOutput: IBaseSearcherOutput) = apply { this.searcherOutput = searcherOutput}
 
 
         fun build(): Searcher {
             val searcher = Searcher(NativeSearcher(context, 0))
             searcher.minFaceSize = minFaceSize
-            searcher.setOutput(output)
+            searcher.searcherOutput = searcherOutput
             return searcher
         }
     }

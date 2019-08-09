@@ -1,6 +1,7 @@
-package com.kesso.er.search.input.CameraInput.ErCamera
+package com.kesso.er.search.input.cameraInput.cameraWrapper
 
-import com.kesso.er.search.input.BaseInput.IDataInputListener
+import com.kesso.er.frame.Frame
+import com.kesso.er.search.input.baseInput.IDataInputListener
 import org.opencv.android.CameraBridgeViewBase
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -31,14 +32,14 @@ class CameraViewListener(var mFrameListenerData: IDataInputListener?) : CameraBr
         Core.flip(tempRgba, mRgbaT, -1)
         Imgproc.resize(mRgbaT, mRgbaT, mRgba?.size())
 
-        mGray = inputFrame!!.gray()
+        mGray = inputFrame.gray()
         mGrayT = mGray?.t()
         val tempGray = mGray?.t()
         Core.flip(tempGray, mGrayT, -1)
         Imgproc.resize(mGrayT, mGrayT, mGray?.size())
 
         if (mGrayT != null) {
-            mFrameListenerData?.receiveFrame(CameraFrame(mGrayT!!, mGrayT!!.rows(), mGrayT!!.cols()))
+            mFrameListenerData?.receiveFrame(Frame(mGrayT!!, 0))
         }
 
         mGray?.release()

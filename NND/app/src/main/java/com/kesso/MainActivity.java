@@ -1,9 +1,6 @@
 package com.kesso;
 
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +14,12 @@ import android.widget.Toast;
 import com.kesso.er.detector.input.IDetectorInput.IFace;
 import com.kesso.er.openGLWrapper.render.ErRender;
 import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
-import com.kesso.er.search.input.BaseInput.IFrame;
-import com.kesso.er.search.input.CameraInput.ErCamera.ErCamera;
-import com.kesso.er.search.input.CameraInput.ICameraBaseInput;
-import com.kesso.er.search.output.BaseOutput.IBaseOutput;
+import com.kesso.er.search.input.baseInput.IFrame;
+import com.kesso.er.search.input.cameraInput.cameraWrapper.ErCamera;
+import com.kesso.er.search.input.cameraInput.ICameraBaseInput;
+import com.kesso.er.search.output.baseOutput.IBaseSearcherOutput;
 import com.kesso.er.search.searcher.Searcher;
 import com.kesso.er.search.SearcherModule;
-import com.kesso.mylibrary.Classifier;
 import com.kesso.mylibrary.MClassifier;
 
 import org.opencv.android.CameraBridgeViewBase;
@@ -32,14 +28,11 @@ import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgproc.Imgproc;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements IBaseOutput {
+public class MainActivity extends AppCompatActivity implements IBaseSearcherOutput {
     private CameraBridgeViewBase cameraBridgeViewBase;
     private ErGLSurfaceView mGLSurfaceView;
     private ErRender mErRender;

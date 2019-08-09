@@ -8,9 +8,10 @@ buildscript {
         
     }
     dependencies {
+        //implementation fileTree(include: ['*.aar'], dir: 'libs')
         classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
+        //classpath "org.example.greeting:GreetingPlugin:+"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
