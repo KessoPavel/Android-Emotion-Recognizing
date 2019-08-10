@@ -2,6 +2,7 @@ package com.kesso.er.core.detect.detector.nativeDetector
 
 import android.app.Activity
 import com.kesso.mylibrary.EmotionClassifier
+import org.opencv.core.Size
 
 class NativeDetector(
         override val activity: Activity,
@@ -9,6 +10,7 @@ class NativeDetector(
     : INativeDetector {
 
     override var emotionList: List<String> = emptyList()
+    override val faceSize: Size = Size(64.0, 64.0)
     private lateinit var classifier: EmotionClassifier
 
     override fun load() {
