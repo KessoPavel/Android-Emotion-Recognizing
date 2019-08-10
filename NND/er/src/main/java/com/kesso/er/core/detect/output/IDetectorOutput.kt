@@ -1,7 +1,7 @@
 package com.kesso.er.core.detect.output
 
-import com.kesso.er.core.detect.input.IDetectorInput.IFace
+import com.kesso.er.core.frame.IBaseFrame
 
 interface IDetectorOutput {
-    fun receive(faceList: List<IFace>)
+    fun receive(frame: IBaseFrame)
 }

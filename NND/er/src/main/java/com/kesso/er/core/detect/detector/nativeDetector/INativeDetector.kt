@@ -6,6 +6,7 @@ import com.kesso.mylibrary.EmotionClassifier
 interface INativeDetector {
     val activity: Activity
     val device: EmotionClassifier.Device
+    val emotionList: List<String>
 
     fun load()
     fun detect(face: ByteArray): String

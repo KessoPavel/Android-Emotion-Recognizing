@@ -1,6 +1,5 @@
-package com.kesso.er.core.detect.input.QueueBehavior
+package com.kesso.er.core.detect.input.queueBehavior
 
-import com.kesso.er.core.frame.Frame
 import com.kesso.er.core.frame.IBaseFrame
 
 class LifoQueueBehavior: IQueueBehavior {

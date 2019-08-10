@@ -1,4 +1,4 @@
-package com.kesso.er.core.detect.input.IDetectorInput
+package com.kesso.er.core.detect.input.detectorInput
 
 import com.kesso.er.core.frame.IBaseFrame
 

@@ -1,4 +1,4 @@
-package com.kesso.er.core.detect.input.QueueBehavior
+package com.kesso.er.core.detect.input.queueBehavior
 
 object QueueBehaviorFactory {
     const val LILO: Int = 0

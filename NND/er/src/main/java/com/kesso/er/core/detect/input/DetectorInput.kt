@@ -1,8 +1,8 @@
 package com.kesso.er.core.detect.input
 
-import com.kesso.er.core.detect.input.IDetectorInput.IDetectorInput
-import com.kesso.er.core.detect.input.IDetectorInput.IFaceListener
-import com.kesso.er.core.detect.input.QueueBehavior.IQueueBehavior
+import com.kesso.er.core.detect.input.detectorInput.IDetectorInput
+import com.kesso.er.core.detect.input.detectorInput.IFaceListener
+import com.kesso.er.core.detect.input.queueBehavior.IQueueBehavior
 import com.kesso.er.core.frame.IBaseFrame
 
 class DetectorInput(override var queueBehavior: IQueueBehavior) : IDetectorInput {

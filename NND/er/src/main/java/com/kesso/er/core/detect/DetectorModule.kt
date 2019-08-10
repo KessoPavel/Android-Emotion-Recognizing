@@ -7,21 +7,22 @@ import com.kesso.er.core.detect.detector.IDetector
 import com.kesso.er.core.detect.detector.nativeDetector.INativeDetector
 import com.kesso.er.core.detect.detector.nativeDetector.NativeDetector
 import com.kesso.er.core.detect.input.DetectorInput
-import com.kesso.er.core.detect.input.IDetectorInput.IDetectorInput
-import com.kesso.er.core.detect.input.QueueBehavior.QueueBehaviorFactory
+import com.kesso.er.core.detect.input.detectorInput.IDetectorInput
+import com.kesso.er.core.detect.input.queueBehavior.QueueBehaviorFactory
 import com.kesso.er.core.detect.output.IDetectorOutput
 import com.kesso.mylibrary.EmotionClassifier
 
-class EmotionPredictorWrapper (val context: Context,
-                               val activity: Activity,
-                               val output: IDetectorOutput,
-                               val device: EmotionClassifier.Device) {
+class DetectorModule (val context: Context,
+                      val activity: Activity,
+                      val output: IDetectorOutput,
+                      val device: EmotionClassifier.Device) {
+
     var input: IDetectorInput? = null
     var detector: IDetector? = null
     var nativeDetector: INativeDetector? = null
 
     fun init(){
-        var queueBehavior = QueueBehaviorFactory.createQueueBehavior(QueueBehaviorFactory.LIFO)
+        val queueBehavior = QueueBehaviorFactory.createQueueBehavior(QueueBehaviorFactory.LIFO)
         input = DetectorInput(queueBehavior)
 
         nativeDetector = NativeDetector(activity, device)
