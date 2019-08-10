@@ -5,4 +5,8 @@ import org.opencv.core.Mat
 
 class Frame(override val data: Mat, override val offset: Int) : IBaseFrame{
     override var faces: List<IFace> = emptyList()
+
+    companion object{
+        fun emptyFrame(): IBaseFrame = Frame(Mat(), 0)
+    }
 }

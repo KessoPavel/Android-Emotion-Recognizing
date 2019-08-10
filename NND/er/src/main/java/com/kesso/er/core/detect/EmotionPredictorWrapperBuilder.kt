@@ -1,8 +1,8 @@
-package com.kesso.er.core.detector
+package com.kesso.er.core.detect
 
 import android.app.Activity
 import android.content.Context
-import com.kesso.er.core.detector.output.IDetectorOutput
+import com.kesso.er.core.detect.output.IDetectorOutput
 import com.kesso.mylibrary.EmotionClassifier
 
 class EmotionPredictorWrapperBuilder {

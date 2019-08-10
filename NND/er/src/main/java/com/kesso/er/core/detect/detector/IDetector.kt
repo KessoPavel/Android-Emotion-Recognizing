@@ -1,12 +1,12 @@
-package com.kesso.er.core.detector.detector
+package com.kesso.er.core.detect.detector
 
-import com.kesso.er.core.detector.detector.nativeDetector.INativeDetector
+import com.kesso.er.core.detect.detector.nativeDetector.INativeDetector
 <<<<<<< HEAD
-import com.kesso.er.core.detector.input.IDetectorInput.IDetectorInputSearcher
-import com.kesso.er.core.detector.output.IDatectorOutput
+import com.kesso.er.core.detect.input.IDetectorInput.IDetectorInput
+import com.kesso.er.core.detect.output.IDatectorOutput
 
 interface IDetector {
-    val input: IDetectorInputSearcher
+    val input: IDetectorInput
 =======
 import com.kesso.er.detector.input.IDetectorInput.IDetectorInput
 import com.kesso.er.detector.input.IDetectorInput.IFaceListener

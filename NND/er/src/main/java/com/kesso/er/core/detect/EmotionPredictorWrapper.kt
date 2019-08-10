@@ -1,15 +1,15 @@
-package com.kesso.er.core.detector
+package com.kesso.er.core.detect
 
 import android.app.Activity
 import android.content.Context
-import com.kesso.er.core.detector.detector.Detector
-import com.kesso.er.core.detector.detector.IDetector
-import com.kesso.er.core.detector.detector.nativeDetector.INativeDetector
-import com.kesso.er.core.detector.detector.nativeDetector.NativeDetector
-import com.kesso.er.core.detector.input.DetectorInput
-import com.kesso.er.core.detector.input.IDetectorInput.IDetectorInput
-import com.kesso.er.core.detector.input.QueueBehavior.QueueBehaviorFactory
-import com.kesso.er.core.detector.output.IDetectorOutput
+import com.kesso.er.core.detect.detector.Detector
+import com.kesso.er.core.detect.detector.IDetector
+import com.kesso.er.core.detect.detector.nativeDetector.INativeDetector
+import com.kesso.er.core.detect.detector.nativeDetector.NativeDetector
+import com.kesso.er.core.detect.input.DetectorInput
+import com.kesso.er.core.detect.input.IDetectorInput.IDetectorInput
+import com.kesso.er.core.detect.input.QueueBehavior.QueueBehaviorFactory
+import com.kesso.er.core.detect.output.IDetectorOutput
 import com.kesso.mylibrary.EmotionClassifier
 
 class EmotionPredictorWrapper (val context: Context,

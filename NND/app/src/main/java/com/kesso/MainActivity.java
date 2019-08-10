@@ -11,7 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kesso.er.core.detector.input.IDetectorInput.IFace;
+import com.kesso.er.core.detect.input.IDetectorInput.IFace;
 import com.kesso.er.openGLWrapper.render.ErRender;
 import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
 <<<<<<< HEAD

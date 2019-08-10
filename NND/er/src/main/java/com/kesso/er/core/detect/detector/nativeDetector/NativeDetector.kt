@@ -1,4 +1,4 @@
-package com.kesso.er.core.detector.detector.nativeDetector
+package com.kesso.er.core.detect.detector.nativeDetector
 
 import android.app.Activity
 import com.kesso.mylibrary.EmotionClassifier

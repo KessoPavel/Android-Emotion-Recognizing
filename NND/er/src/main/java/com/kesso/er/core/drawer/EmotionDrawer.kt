@@ -6,8 +6,8 @@ import android.support.annotation.RequiresApi
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
 import android.view.View
-import com.kesso.er.core.detector.input.IDetectorInput.IFace
-import com.kesso.er.core.detector.output.IDetectorOutput
+import com.kesso.er.core.detect.input.IDetectorInput.IFace
+import com.kesso.er.core.detect.output.IDetectorOutput
 import com.kesso.er.openGLWrapper.render.ErRender
 import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView
 import java.util.*
