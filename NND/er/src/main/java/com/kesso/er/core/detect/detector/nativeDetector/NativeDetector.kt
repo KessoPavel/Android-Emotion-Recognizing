@@ -14,7 +14,7 @@ class NativeDetector(
     private lateinit var classifier: EmotionClassifier
 
     override fun load() {
-        classifier = EmotionClassifier.create(activity, EmotionClassifier.Device.CPU, 1, EmotionClassifier.Model.TFModel)
+        classifier = EmotionClassifier.create(activity, device, 1, EmotionClassifier.Model.TFModel)
         emotionList = emptyList()
     }
 

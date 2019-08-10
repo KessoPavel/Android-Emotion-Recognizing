@@ -10,17 +10,17 @@ import org.opencv.android.CameraBridgeViewBase
 
 class SearcherModule(
         val context: Context,
-        val cameraView: CameraBridgeViewBase,
-        val searcherOutput: IBaseSearcherOutput) {
+        val cameraView: CameraBridgeViewBase) {
 
     var input: IBaseInput? = null
     var searcher: ISearcher? = null
+    var searcherOutput: IBaseSearcherOutput? = null
 
     fun init(){
         input = CameraBaseInput(cameraView)
         searcher = Searcher.Builder(
                 context = context,
-                searcherOutput = searcherOutput
+                searcherOutput = searcherOutput!!
         ).build()
 
         input?.setDataInputListener(searcher as Searcher)

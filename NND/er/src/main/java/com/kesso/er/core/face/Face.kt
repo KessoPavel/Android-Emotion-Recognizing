@@ -8,7 +8,7 @@ class Face(
         override val leftTopY: Int,
         override val rightBottomX: Int,
         override val rightBottomY: Int) : IFace {
-    override var emotion: Int = -1
+    override var emotion: String = ""
 
     companion object Converter {
         fun getFaces(mathOfRect: MatOfRect): List<IFace> {
