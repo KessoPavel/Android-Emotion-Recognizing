@@ -11,25 +11,23 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kesso.er.detector.input.IDetectorInput.IFace;
+import com.kesso.er.core.detector.input.IDetectorInput.IFace;
 import com.kesso.er.openGLWrapper.render.ErRender;
 import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
 <<<<<<< HEAD
-import com.kesso.er.search.input.baseInput.IFrame;
-import com.kesso.er.search.input.cameraInput.cameraWrapper.ErCamera;
-import com.kesso.er.search.input.cameraInput.ICameraBaseInput;
-import com.kesso.er.search.output.baseOutput.IBaseSearcherOutput;
-import com.kesso.er.search.searcher.Searcher;
-import com.kesso.er.search.SearcherModule;
+import com.kesso.er.core.search.input.baseInput.IFrame;
+import com.kesso.er.core.search.input.cameraInput.cameraWrapper.ErCamera;
+import com.kesso.er.core.search.input.cameraInput.ICameraBaseInput;
+import com.kesso.er.core.search.output.baseOutput.IBaseSearcherOutput;
+import com.kesso.er.core.search.searcher.Searcher;
 import com.kesso.mylibrary.MClassifier;
 =======
-import com.kesso.er.search.SearcherWrapperBuilder;
-import com.kesso.er.search.input.BaseInput.IFrame;
-import com.kesso.er.search.input.CameraInput.ErCamera.ErCamera;
-import com.kesso.er.search.input.CameraInput.ICameraBaseInput;
-import com.kesso.er.search.output.BaseOutput.IBaseOutput;
-import com.kesso.er.search.searcher.Searcher;
-import com.kesso.er.search.SearcherWrapper;
+import com.kesso.er.core.search.SearcherWrapperBuilder;
+import com.kesso.er.core.search.input.BaseInput.IFrame;
+import com.kesso.er.core.search.input.CameraInput.ErCamera.ErCamera;
+import com.kesso.er.core.search.input.CameraInput.ICameraBaseInput;
+import com.kesso.er.core.search.output.BaseOutput.IBaseOutput;
+import com.kesso.er.core.search.SearcherWrapper;
 import com.kesso.mylibrary.EmotionClassifier;
 >>>>>>> e4830639ea0791aa3fc426aeb4955b4c8f703e6c
 
