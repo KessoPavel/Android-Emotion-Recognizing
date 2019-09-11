@@ -10,12 +10,12 @@ import com.kesso.er.core.detect.input.DetectorInput
 import com.kesso.er.core.detect.input.detectorInput.IDetectorInput
 import com.kesso.er.core.detect.input.queueBehavior.QueueBehaviorFactory
 import com.kesso.er.core.detect.output.IDetectorOutput
-import com.kesso.mylibrary.EmotionClassifier
+import com.kesso.nnilib.Device
 
 class DetectorModule (val context: Context,
                       val activity: Activity,
                       val output: IDetectorOutput,
-                      val device: EmotionClassifier.Device) {
+                      val device: Device) {
 
     var input: IDetectorInput? = null
     var detector: IDetector? = null

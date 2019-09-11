@@ -19,6 +19,7 @@ import com.kesso.er.core.search.SearcherModule;
 import com.kesso.er.openGLWrapper.render.ErRender;
 import com.kesso.er.openGLWrapper.vIew.ErGLSurfaceView;
 import com.kesso.mylibrary.EmotionClassifier;
+import com.kesso.nnilib.Device;
 
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.core.Mat;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements IDetectorOutput {
         mGLSurfaceView.setId(View.generateViewId());
         mGLSurfaceView.setZOrderOnTop(true);
 
+        cameraBridgeViewBase = findViewById(R.id.fd_activity_surface_view);
         ConstraintLayout view = findViewById(R.id.glLiner);
         ConstraintSet constraintSet = new ConstraintSet();
         view.addView(mGLSurfaceView);
@@ -65,10 +67,14 @@ public class MainActivity extends AppCompatActivity implements IDetectorOutput {
 
 
         SearcherModule searcherModule = new SearcherModule(this, cameraBridgeViewBase);
-        DetectorModule detectorModule = new DetectorModule(this, this, this, EmotionClassifier.Device.CPU);
+        DetectorModule detectorModule = new DetectorModule(this, this, this, Device.CPU);
         detectorModule.init();
         searcherModule.setSearcherOutput(detectorModule.getInput());
         searcherModule.init();
+
+
+        detectorModule.open();
+        searcherModule.open();
     }
 
     @Override
