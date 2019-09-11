@@ -22,7 +22,7 @@ class CameraBaseInput constructor(private var mCameraBridgeViewBase: CameraBridg
             }
         }
 
-    override var currentCamera: ErCamera = ErCamera.BASE
+    override var currentCamera: ErCamera = ErCamera.FRONT
         set(value) = mCameraBridgeViewBase.setCameraIndex(value.getCameraId())
 
     override fun open(visible: Boolean): Boolean {

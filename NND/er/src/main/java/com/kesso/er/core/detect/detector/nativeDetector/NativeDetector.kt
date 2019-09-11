@@ -3,6 +3,7 @@ package com.kesso.er.core.detect.detector.nativeDetector
 import android.app.Activity
 import com.kesso.nnilib.Classifier
 import com.kesso.nnilib.Device
+import com.kesso.nnilib.Recognition
 import org.opencv.core.Size
 
 class NativeDetector(
@@ -30,11 +31,8 @@ class NativeDetector(
 
     override fun detect(face: ByteArray): String {
         val prediction = classifier.classify(face)
-        if (prediction.isNotEmpty()){
-            return prediction[0].title
-        }
 
-        return ""
+        return getPrediction(prediction).title
     }
 
     override fun resume() {
@@ -47,5 +45,19 @@ class NativeDetector(
 
     override fun stop() {
 
+    }
+
+    private fun getPrediction(predictions: List<Recognition>): Recognition{
+        var max: Float = 0.0f
+        var answer: Recognition? = null
+
+        for (prediction in predictions){
+            if (max < prediction.confidence) {
+                max = prediction.confidence
+                answer = prediction
+            }
+        }
+
+        return answer!!
     }
 }
